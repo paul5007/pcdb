@@ -186,3 +186,30 @@ func TestRegionUpdate(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestGetAll(t *testing.T) {
+	// fail if there are two different data types in a region
+	key1, key2 := "key1", "key2"
+	mock1 := int(10)
+	mock2 := int(25)
+
+	r := NewRegion("Test")
+	err := r.Add(key1, mock1)
+	if err != nil {
+		t.Log(err)
+		t.FailNow()
+	}
+
+	err = r.Add(key2, mock2)
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
+
+	all := r.GetAll()
+	if 2 != len(all) {
+		t.Logf("Did not return both entries. Returned: %v", all)
+		t.Fail()
+	}
+
+}

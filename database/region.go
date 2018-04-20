@@ -61,6 +61,15 @@ func (r *Region) Update(key string, value interface{}) error {
 	return nil
 }
 
+// GetAll returns a list of all objects in a region
+func (r *Region) GetAll() []interface{} {
+	var list []interface{}
+	for _, d := range r.Data {
+		list = append(list, d)
+	}
+	return list
+}
+
 // NumEntries returns the number of entries in Data
 func (r *Region) NumEntries() int {
 	return len(r.Data)
