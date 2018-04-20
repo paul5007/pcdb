@@ -20,10 +20,7 @@ func (ps *PersonService) AddPerson(db database.PaulCacheDatabase, p domain.Perso
 	if err != nil {
 		return fmt.Errorf("Failed to find region: %v | %v", regionName, err)
 	}
-	valid, err := p.Valid()
-	if !valid {
-		return fmt.Errorf("Failed to validated Person: %v | %v", p, err)
-	}
+
 	err = r.Add(p.ID, p)
 	if err != nil {
 		return fmt.Errorf("Failed to add Person: %v to region: %v | %v", p, regionName, err)
