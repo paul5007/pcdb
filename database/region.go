@@ -36,7 +36,7 @@ func (r *Region) Add(key string, value interface{}) error {
 
 // Remove removes an object from map based on key
 func (r *Region) Remove(key string) error {
-	r.Data = nil
+	r.Data[key] = nil
 	return nil
 }
 

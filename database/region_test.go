@@ -132,6 +132,10 @@ func TestRegionRemoveObject(t *testing.T) {
 		t.FailNow()
 	}
 
+	if r.Data == nil {
+		t.Fail()
+	}
+
 	if r.Data[key] != nil {
 		t.Fail()
 	}
