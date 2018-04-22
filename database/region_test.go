@@ -6,8 +6,8 @@ import (
 )
 
 func TestNewRegion(t *testing.T) {
-	r := NewRegion("Test")
-	if r.Name != "Test" {
+	r := NewRegion(testRegionName)
+	if r.Name != testRegionName {
 		t.Fail()
 	}
 	if r.Data == nil {
@@ -16,7 +16,8 @@ func TestNewRegion(t *testing.T) {
 }
 
 func TestRegionNumEntries(t *testing.T) {
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
+
 	if 0 != r.NumEntries() {
 		t.Fail()
 	}
@@ -29,7 +30,7 @@ func TestRegionAddObject(t *testing.T) {
 	key := "key"
 	mock := int(10)
 
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
 	err := r.Add(key, mock)
 	if err != nil {
 		t.Log(err)
@@ -45,7 +46,7 @@ func TestRegionAddTwoSimilarObjects(t *testing.T) {
 	mock1 := int(10)
 	mock2 := int(25)
 
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
 	err := r.Add(key1, mock1)
 	if err != nil {
 		t.Log(err)
@@ -70,7 +71,7 @@ func TestRegionAddTwoSimilarObjectsToSameKey(t *testing.T) {
 	mock1 := int(10)
 	mock2 := int(25)
 
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
 	err := r.Add(key, mock1)
 	if err != nil {
 		t.Log(err)
@@ -96,7 +97,7 @@ func TestRegionAddTwoDifferentObjects(t *testing.T) {
 	mock1 := int(10)
 	mock2 := "25"
 
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
 	err := r.Add(key1, mock1)
 	if err != nil {
 		t.Log(err)
@@ -120,7 +121,7 @@ func TestRegionRemoveObject(t *testing.T) {
 	key := "key"
 	mockObj := int(10)
 
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
 	err := r.Add(key, mockObj)
 	if err != nil {
 		t.Log(err)
@@ -145,7 +146,7 @@ func TestRegionGetObject(t *testing.T) {
 	key := "key"
 	mockObj := int(10)
 
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
 	err := r.Add(key, mockObj)
 	if err != nil {
 		t.Log(err)
@@ -172,7 +173,7 @@ func TestRegionUpdate(t *testing.T) {
 	mock1 := int(10)
 	mock2 := int(25)
 
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
 	err := r.Add(key, mock1)
 	if err != nil {
 		t.Log(err)
@@ -197,7 +198,7 @@ func TestGetAll(t *testing.T) {
 	mock1 := int(10)
 	mock2 := int(25)
 
-	r := NewRegion("Test")
+	r := NewRegion(testRegionName)
 	err := r.Add(key1, mock1)
 	if err != nil {
 		t.Log(err)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"reflect"
 )
 
 const (
@@ -66,18 +67,18 @@ func (db *PCDB) ImportRegion(regionName, filename string) error {
 		return fmt.Errorf("Failed to unmarshal data: %v | %v", jsonData, err)
 	}
 
-	if mapData, ok := data.(map[string]interface{}); ok {
-		r, err := db.GetRegion(regionName)
-		if err != nil {
-			return fmt.Errorf("Region: %v does not exist | %v", regionName, err)
-		}
-		for key, val := range mapData {
-			r.Add(key, val)
-		}
-		return nil
+	r, err := db.GetRegion(regionName)
+	if err != nil {
+		return fmt.Errorf("Region: %v does not exist | %v", regionName, err)
 	}
-	return fmt.Errorf("Issue type casting data to region")
-
+	dataMap := reflect.ValueOf(data)
+	if dataMap.Kind() == reflect.Map {
+		for _, key := range dataMap.MapKeys() {
+			d := dataMap.MapIndex(key)
+			r.Add(key.String(), d)
+		}
+	}
+	return nil
 }
 
 func shutdownPersistence() {
