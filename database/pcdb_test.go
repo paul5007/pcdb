@@ -5,36 +5,60 @@ import (
 )
 
 func TestNewPCDB(t *testing.T) {
-	db := NewPCDB()
-	if db == nil {
+	d := NewPCDB()
+	if d == nil {
 		t.Fail()
 	}
 }
 
 func TestNumRegions(t *testing.T) {
-	db := NewPCDB()
-	if db == nil {
+	d := NewPCDB()
+	if d == nil {
 		t.Log("Database not initialized")
 		t.FailNow()
 	}
-	if 0 != db.NumRegions() {
+	if 0 != d.NumRegions() {
 		t.Fail()
 	}
-	if len(db.RegionList) != db.NumRegions() {
+	if len(d.RegionList) != d.NumRegions() {
 		t.Fail()
 	}
 }
 
 func TestAddRegion(t *testing.T) {
-	db := NewPCDB()
-	err := db.AddRegion("TestAdd")
+	d := NewPCDB()
+	err := d.AddRegion("TestAdd")
 	if err != nil {
 		t.Log(err)
 		t.FailNow()
 	}
-	if 1 != db.NumRegions() {
-		t.Log("Incorrect number of regions:", db.NumRegions())
-		t.Log(db.RegionList)
+	if 1 != d.NumRegions() {
+		t.Log("Incorrect number of regions:", d.NumRegions())
+		t.Log(d.RegionList)
+		t.Fail()
+	}
+}
+
+func TestTwoAddRegionsSameName(t *testing.T) {
+	d := NewPCDB()
+	err := d.AddRegion("TestAdd")
+	if err != nil {
+		t.Log(err)
+		t.FailNow()
+	}
+	if 1 != d.NumRegions() {
+		t.Log("Incorrect number of regions:", d.NumRegions())
+		t.Log(d.RegionList)
+		t.Fail()
+	}
+	err = d.AddRegion("TestAdd")
+	if err == nil {
+		t.Log("Should fail to create a region with same name")
+		t.Fail()
+	}
+	if 1 != d.NumRegions() {
+		t.Log("Incorrect number of regions:", d.NumRegions())
+		t.Log(d.RegionList)
 		t.Fail()
 	}
 }

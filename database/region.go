@@ -36,7 +36,7 @@ func (r *Region) Add(key string, value interface{}) error {
 
 // Remove removes an object from map based on key
 func (r *Region) Remove(key string) error {
-	r.Data = nil
+	r.Data[key] = nil
 	return nil
 }
 
@@ -59,6 +59,15 @@ func (r *Region) Update(key string, value interface{}) error {
 	}
 	r.Data[key] = value
 	return nil
+}
+
+// GetAll returns a list of all objects in a region
+func (r *Region) GetAll() []interface{} {
+	var list []interface{}
+	for _, d := range r.Data {
+		list = append(list, d)
+	}
+	return list
 }
 
 // NumEntries returns the number of entries in Data

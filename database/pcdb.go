@@ -26,6 +26,9 @@ func (db *PCDB) AddRegion(name string) error {
 	if allowedKeyValues.MatchString(name) {
 		return fmt.Errorf("Illegal characters used in name: %v", name)
 	}
+	if r, _ := db.GetRegion(name); r != nil {
+		return fmt.Errorf("Region already exists")
+	}
 	data := make(map[string]interface{})
 	r := Region{Data: data, Name: name}
 	size := db.NumRegions()
