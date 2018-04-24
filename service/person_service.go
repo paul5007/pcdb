@@ -27,10 +27,11 @@ func (ps *PersonService) AddPerson(db database.PaulCacheDatabase, p domain.Perso
 	if err != nil {
 		return fmt.Errorf("Failed to find region: %v | %v", regionName, err)
 	}
-
-	id := generateID()
-	p.ID = id
-	err = r.Add(id, p)
+	// if ID for Person is not provided then generate one
+	if p.ID == "" {
+		p.ID = generateID()
+	}
+	err = r.Add(p.ID, p)
 	if err != nil {
 		return fmt.Errorf("Failed to add Person: %v to region: %v | %v", p, regionName, err)
 	}
@@ -48,6 +49,22 @@ func (ps *PersonService) RemovePerson(db database.PaulCacheDatabase, id string) 
 		return fmt.Errorf("Failed to remove Person with ID: %v from region: %v | %v", id, regionName, err)
 	}
 	return nil
+}
+
+// GetPerson returns a person from the database
+func (ps *PersonService) GetPerson(db database.PaulCacheDatabase, id string) (*domain.Person, error) {
+	r, err := db.GetRegion(regionName)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to find region: %v | %v", regionName, err)
+	}
+	data, err := r.Get(id)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to get Person with ID: %v from region: %v | %v", id, regionName, err)
+	}
+	if p, ok := data.(domain.Person); ok {
+		return &p, nil
+	}
+	return nil, fmt.Errorf("Data returned was not of domain Person. Returned %v", data)
 }
 
 // ListPersons will return all persons from database
