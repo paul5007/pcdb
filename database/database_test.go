@@ -1,12 +1,18 @@
 package database
 
 const (
-	testRegionName = "Test"
+	testRegionName     = "Test"
+	testListRegionName = "TestList"
 )
 
 type mockObj struct {
 	ID  string
 	Val int
+}
+
+type mockObjList struct {
+	ID   string
+	List []mockObj
 }
 
 func newMockDB() *PCDB {
@@ -19,6 +25,7 @@ func newMockDB() *PCDB {
 		panic(err)
 	}
 
+	// initialize test region with data
 	r, err := db.GetRegion(testRegionName)
 	if err != nil {
 		panic(err)
@@ -44,5 +51,27 @@ func newMockDB() *PCDB {
 	if 3 != r.NumEntries() {
 		panic("Failed to add 3 test entries")
 	}
+
+	// initialize testListRegion with data
+	err = db.AddRegion(testListRegionName)
+	if err != nil {
+		panic(err)
+	}
+
+	r, err = db.GetRegion(testListRegionName)
+	if err != nil {
+		panic(err)
+	}
+
+	ol := []mockObj{o1, o2, o3}
+	mol1 := &mockObjList{ID: key1, List: ol}
+	err = r.Add(key1, mol1)
+	if err != nil {
+		panic(err)
+	}
+	if 1 != r.NumEntries() {
+		panic("Failed to add 3 test entries")
+	}
+
 	return db
 }
