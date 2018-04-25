@@ -35,11 +35,12 @@ func (db *PCDB) RunQuery(q Query) (*SelectResults, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Region does not exist. Region names are case sensitive")
 	}
-	clause := pieces[4]
 	resultSet := &SelectResults{resultList: r.GetAll()}
-	if clause == "" {
+	if len(pieces) <= 4 {
 		return resultSet, nil
 	}
+
+	clause := pieces[4]
 	if strings.ToUpper(clause) != strings.ToUpper("where") {
 		return nil, fmt.Errorf("Only WHERE clause is supported")
 	}
@@ -75,10 +76,8 @@ func parsedResults(resultSet *SelectResults, field string, value string) (*Selec
 			kind := d.Kind()
 			_ = kind
 			x := d.FieldByName(field)
-			fmt.Println(x)
 			xS := fmt.Sprintf("%v", x)
 			if xS == value {
-				fmt.Println(d)
 				newResults = append(newResults, d)
 			}
 		}
